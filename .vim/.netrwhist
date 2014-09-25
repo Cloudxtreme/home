@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/data/leoxiang/appleserver_proj/trunk'
+let g:netrw_dirhist_2='/etc/ld.so.conf.d'
+let g:netrw_dirhist_3='/home/xiangkun/proj/mj_frame/svr/config/app'
