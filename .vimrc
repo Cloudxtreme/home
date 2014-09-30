@@ -366,7 +366,7 @@ function! s:LeoBashComment()
   let s:head = s:head.s:eol."#       COMPANY: XiMi Co.Ltd"
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
-  let s:tail =        s:eol."# vim:ts=2:sw=2:et:ft=sh:"
+  let s:tail =        s:eol."# vim:ts=2:sw=2:et:"
 
   exec "normal O".s:head
   exec "normal Go".s:tail
@@ -399,7 +399,7 @@ function! s:LeoMakefileComment()
   let s:head = s:head.s:eol."#       COMPANY: XiMi Co.Ltd"
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
-  let s:tail =        s:eol."# vim:ts=4:sw=4:ft=make:"
+  let s:tail =        s:eol."# vim:ts=4:sw=4:"
 
   exec "normal O".s:head
   exec "normal Go".s:tail
@@ -412,6 +412,7 @@ if has("autocmd")
 endif
 "-------------------------------------------------------------------------------
 " C/C++
+" Protobuf
 "-------------------------------------------------------------------------------
 function! s:LeoCComment()
   let s:eol   = "\<enter>"
@@ -433,7 +434,7 @@ function! s:LeoCComment()
   let s:line += [""]
   let s:line += [""]
   let s:line += [""]
-  let s:line += ["// vim:ts=4:sw=4:et:ft=cpp:"]
+  let s:line += ["// vim:ts=4:sw=4:et:"]
 
   call setline(1, s:line)
   call s:LeoCInit()
@@ -451,8 +452,8 @@ function! s:LeoCInit()
   vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 endfunction 
 if has("autocmd")
-  autocmd  BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCComment()
-  autocmd  BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCInit()
+  autocmd  BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp,*.proto call s:LeoCComment()
+  autocmd  BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp,*.proto call s:LeoCInit()
 endif
 "-------------------------------------------------------------------------------
 " XML
@@ -479,5 +480,11 @@ if has("autocmd")
   autocmd  BufNewFile *.xml call s:LeoXMLComment()
   autocmd  BufReadPre *.xml call s:LeoXMLInit()
 endif
+"-------------------------------------------------------------------------------
+" Protobuf
+"-------------------------------------------------------------------------------
+augroup filetype
+  au! BufRead,BufNewFile *.proto setfiletype proto
+augroup end
 
 " vim:ts=2:sw=2:et:ft=vim:tw=85:fdm=marker:fdc=2
