@@ -160,7 +160,8 @@ nmap <leader>so     :so %<cr>
 nmap <leader>mm     :Man 
 nmap <leader>e      :e! ~/.vimrc<cr>
 nmap <leader>h      :noh<cr>
-nmap <leader>t      :call g:ClangUpdateQuickFix()<cr>:silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
+"nmap <leader>tt      :call g:ClangUpdateQuickFix()<cr>
+nmap <leader>t      :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 nmap <leader>dd     :Dox<cr>
 nmap <leader>df     :DoxAuthor<cr>
 nmap <leader>dl     :DoxLic<cr>
@@ -362,8 +363,8 @@ function! s:LeoBashComment()
   let s:head = s:head.s:eol."#"
   let s:head = s:head.s:eol."#   DESCRIPTION: ---"
   let s:head = s:head.s:eol."#         NOTES: ---"
-  let s:head = s:head.s:eol."#        AUTHOR: leoxiang, xiangkun@ximigame.com"
-  let s:head = s:head.s:eol."#       COMPANY: XiMi Co.Ltd"
+  let s:head = s:head.s:eol."#        AUTHOR: leoxiang, leoxiang727@qq.com"
+  let s:head = s:head.s:eol."#       COMPANY: "
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
   let s:tail =        s:eol."# vim:ts=2:sw=2:et:"
@@ -392,11 +393,11 @@ function! s:LeoMakefileComment()
   let s:head = s:head.s:eol."#                make clean      :remove objects, executable, prerequisits"
   let s:head = s:head.s:eol."#"
   let s:head = s:head.s:eol."#   DESCRIPTION: ---"
-  let s:head = s:head.s:eol."#         NOTES: config.mk - define project configuration"
-  let s:head = s:head.s:eol."#                build.mk  - auto-generate dependencies for c/c++ files"
-  let s:head = s:head.s:eol."#                Remember to inlcude build.mk after all your targets!"
-  let s:head = s:head.s:eol."#        AUTHOR: leoxiang, xiangkun@ximigame.com"
-  let s:head = s:head.s:eol."#       COMPANY: XiMi Co.Ltd"
+  let s:head = s:head.s:eol."#         NOTES: Makefile.shared - define project configuration"
+  let s:head = s:head.s:eol."#                Makefile.rule  - auto-generate dependencies for c/c++ files"
+  let s:head = s:head.s:eol."#                Remember to inlcude Makefile.rule after all your targets!"
+  let s:head = s:head.s:eol."#        AUTHOR: leoxiang, leoxiang727@qq.com"
+  let s:head = s:head.s:eol."#       COMPANY: "
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
   let s:tail =        s:eol."# vim:ts=4:sw=4:"
@@ -423,14 +424,8 @@ function! s:LeoCComment()
   let s:line += ["// File:        ".s:fname]
   let s:line += ["// Description: ---"]
   let s:line += ["// Notes:       ---"]
-  let s:line += ["// Author:      leoxiang <xiangkun@ximigame.com>"]
+  let s:line += ["// Author:      leoxiang <leoxiang727@qq.com>"]
   let s:line += ["// Revision:    ".s:date." by leoxiang"]
-  let s:line += ["//"]
-  let s:line += ["// Copyright (C) 1998-2014 XiMi. All Rights Reserved."]
-  let s:line += ["// This is unpublished proprietary source code of XiMi Ltd. The copyright"]
-  let s:line += ["// notice above does not evidence any actual or intended publication of such"]
-  let s:line += ["// source code. UNAUTHORIZED DISTRIBUTION, ADAPTATION OR USE MAY BE SUBJECT"]
-  let s:line += ["// TO CIVIL AND CRIMINAL PENALTIES."]
   let s:line += [""]
   let s:line += [""]
   let s:line += [""]
