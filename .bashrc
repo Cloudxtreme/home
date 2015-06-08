@@ -21,6 +21,9 @@ shopt -s checkwinsize
 # stop mail check
 unset MAILCHECK
 
+# not using gnome ask pass
+unset SSH_ASKPASS
+
 ############################################################
 # Interface Settings
 ############################################################
