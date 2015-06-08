@@ -160,8 +160,7 @@ nmap <leader>so     :so %<cr>
 nmap <leader>mm     :Man 
 nmap <leader>e      :e! ~/.vimrc<cr>
 nmap <leader>h      :noh<cr>
-"nmap <leader>tt      :call g:ClangUpdateQuickFix()<cr>
-nmap <leader>t      :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
+nmap <leader>t      :call g:ClangUpdateQuickFix()<cr>:silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 nmap <leader>dd     :Dox<cr>
 nmap <leader>df     :DoxAuthor<cr>
 nmap <leader>dl     :DoxLic<cr>
@@ -277,7 +276,7 @@ let NERDTreeShowHidden    = 0
 let NERDTreeWinPos        = 'left'
 let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
-"let NERDTreeIgnore        = ['\.dep$','\.o$','\.d$']
+let NERDTreeIgnore        = ['\.dep$','\.o$','\.d$']
 "-------------------------------------------------------------------------------
 " NERD_Commenter
 "-------------------------------------------------------------------------------
@@ -315,22 +314,12 @@ let g:clang_snippets          = 1
 let g:clang_close_preview     = 1
 let g:clang_complete_macros   = 1
 let g:clang_use_library       = 1
-let g:clang_library_path      = "/usr/lib/llvm-3.4/lib"
+let g:clang_library_path      = "/usr/lib64/llvm"
 let g:clang_user_options      = "-stdlib=libstdc++"
 "-------------------------------------------------------------------------------
 "" Ctags
 ""-------------------------------------------------------------------------------
 set tags=tags,.tags
-"set tags+=/usr/local/tsf4gweb_release/include/tags
-"set tags+=/usr/local/DreamBoxComm/tags
-""-------------------------------------------------------------------------------
-"" Cscope
-""-------------------------------------------------------------------------------
-"set csprg=/usr/bin/cscope
-"set cscopequickfix=s-,c-,d-,i-,t-,e-
-"set csto=0
-"set cst
-"set nocsverb
 
 "===================================================================================
 " PREDEFINED LINES {{{1
@@ -367,7 +356,7 @@ function! s:LeoBashComment()
   let s:head = s:head.s:eol."#       COMPANY: "
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
-  let s:tail =        s:eol."# vim:ts=2:sw=2:et:"
+  let s:tail =        s:eol."# vim:ts=2:sw=2:et:ft=sh:"
 
   exec "normal O".s:head
   exec "normal Go".s:tail
@@ -395,12 +384,12 @@ function! s:LeoMakefileComment()
   let s:head = s:head.s:eol."#   DESCRIPTION: ---"
   let s:head = s:head.s:eol."#         NOTES: Makefile.shared - define project configuration"
   let s:head = s:head.s:eol."#                Makefile.rule  - auto-generate dependencies for c/c++ files"
-  let s:head = s:head.s:eol."#                Remember to inlcude Makefile.rule after all your targets!"
+  let s:head = s:head.s:eol."#                Remember to inlcude build.mk after all your targets!"
   let s:head = s:head.s:eol."#        AUTHOR: leoxiang, leoxiang727@qq.com"
   let s:head = s:head.s:eol."#       COMPANY: "
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
-  let s:tail =        s:eol."# vim:ts=4:sw=4:"
+  let s:tail =        s:eol."# vim:ts=4:sw=4:ft=make:"
 
   exec "normal O".s:head
   exec "normal Go".s:tail
@@ -413,7 +402,6 @@ if has("autocmd")
 endif
 "-------------------------------------------------------------------------------
 " C/C++
-" Protobuf
 "-------------------------------------------------------------------------------
 function! s:LeoCComment()
   let s:eol   = "\<enter>"
@@ -429,10 +417,9 @@ function! s:LeoCComment()
   let s:line += [""]
   let s:line += [""]
   let s:line += [""]
-  let s:line += ["// vim:ts=4:sw=4:et:"]
+  let s:line += ["// vim:ts=4:sw=4:et:ft=cpp:"]
 
   call setline(1, s:line)
-  call s:LeoCInit()
   exec "normal Gkk"
   start!
 endfunction 
@@ -447,8 +434,8 @@ function! s:LeoCInit()
   vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 endfunction 
 if has("autocmd")
-  autocmd  BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp,*.proto call s:LeoCComment()
-  autocmd  BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp,*.proto call s:LeoCInit()
+  autocmd  BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCComment()
+  autocmd  BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCInit()
 endif
 "-------------------------------------------------------------------------------
 " XML
