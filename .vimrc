@@ -11,21 +11,10 @@
 "-------------------------------------------------------------------------------
 " Important settings
 "-------------------------------------------------------------------------------
-let os_type = 'linux' " Specify your OS type: linux, mac, windows
 set nocompatible    " Use Vim settings, rather then Vi settings. Set this first.
 syntax   on         " Switch syntax highlighting on.
 filetype plugin on  " Enable file type detection.
 filetype indent on  " Enable language-dependent indenting.
-"-------------------------------------------------------------------------------
-" OS specific settings
-"-------------------------------------------------------------------------------
-if os_type == 'linux'
-  set backupdir=~/.vim/.backup    " set path used to store backup files.
-  set directory=.,~/.vim/.swap    " set path used to store swap files.
-  set path=.,/usr/include,,       " set path used to search for files.
-elseif os_type == 'mac'
-elseif os_type == 'windows'
-endif
 "-------------------------------------------------------------------------------
 " Various settings
 "-------------------------------------------------------------------------------
@@ -77,8 +66,8 @@ set completeopt=menuone         " let clang_complete not popup preview window
 "-------------------------------------------------------------------------------
 " Automatic open quickfix windows after cmd, like make.
 "-------------------------------------------------------------------------------
-"autocmd QuickFixCmdPost [^l]* nested cwindow
-"autocmd QuickFixCmdPost    l* nested lwindow
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 "-------------------------------------------------------------------------------
 " Multi-encoding setting
 "-------------------------------------------------------------------------------
@@ -86,29 +75,13 @@ set completeopt=menuone         " let clang_complete not popup preview window
 let g:fencview_autodetect = 1   
 "vim internal support
 if has("multi_byte")
-  " set vim internal encoding
   set encoding=UTF-8
   set langmenu=en_US.UTF-8
   language message en_US.UTF-8
-  " set this according to term
   set termencoding=UTF-8
-  " set auto detect
   set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 else
-  echoerr "Sorry, this version of (g)vim was not compiled with multi_byte"
-endif
-"-------------------------------------------------------------------------------
-" Set font type and size depending on OS type
-"-------------------------------------------------------------------------------
-if os_type == "mac"
-  set gfn=bitstream\ vera\ sans\ mono:h13
-  set shell=/bin/bash
-elseif os_type == "windows"
-  set gfn=bitstream\ vera\ sans\ mono:h10
-elseif os_type == "linux"
-  set gfn=bitstream\ vera\ sans\ mono\ 11
-  set gfw=microsoft\ yahei
-  set shell=/bin/bash
+  echoerr "sorry, this version of vim was not compiled with multi_byte"
 endif
 "-------------------------------------------------------------------------------
 " Set colortheme depending on GUI or non-GUI
@@ -160,7 +133,7 @@ nmap <leader>so     :so %<cr>
 nmap <leader>mm     :Man 
 nmap <leader>e      :e! ~/.vimrc<cr>
 nmap <leader>h      :noh<cr>
-nmap <leader>t      :call g:ClangUpdateQuickFix()<cr>:silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
+"nmap <leader>t      :call g:ClangUpdateQuickFix()<cr>:silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 nmap <leader>dd     :Dox<cr>
 nmap <leader>df     :DoxAuthor<cr>
 nmap <leader>dl     :DoxLic<cr>
@@ -221,13 +194,11 @@ nnoremap <space>        i<space><esc><right>
 nnoremap <backspace>    X
 noremap  s  <nop>
 noremap  S  <nop>
-
 nnoremap t<cr>    :tabnew<cr>
 nnoremap tq       :tabclose<cr>
 nnoremap tn       :tabn<cr>
 nnoremap tp       :tabp<cr>
 nnoremap tm       :tabm<cr>
-
 nnoremap <c-h>    8<left>
 nnoremap <c-j>    8<down>
 nnoremap <c-k>    8<up>
@@ -250,9 +221,28 @@ xnoremap  <leader>{  s{}<esc>P<right>
 " PLUGIN CONFIGURATIONS {{{1
 "===================================================================================
 "-------------------------------------------------------------------------------
-" Manpageview
+" Vundle
 "-------------------------------------------------------------------------------
-let g:manpageview_winopen = 'vsplit='
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+" from vim-scripts
+Plugin 'taglist.vim'
+Plugin 'matrix.vim'
+Plugin 'grep.vim'
+Plugin 'vcscommand.vim'
+Plugin 'quickfixsigns'
+Plugin 'Align'
+Plugin 'xmledit'
+" from 3rd git-hub
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'Valloric/YouCompleteMe'
+call vundle#end()
+filetype plugin indent on
 "-------------------------------------------------------------------------------
 " Align
 "-------------------------------------------------------------------------------
@@ -292,7 +282,7 @@ let Tlist_Auto_Highlight_Tag        = 1
 let Tlist_Auto_Update               = 1
 let Tlist_Close_On_Select           = 0
 let Tlist_Compact_Format            = 0
-let Tlist_Ctags_Cmd                 = "/usr/bin/ctags"
+"let Tlist_Ctags_Cmd                 = "/usr/bin/ctags"
 let Tlist_Display_Tag_Scope         = 1
 let Tlist_Enable_Fold_Column        = 1
 let Tlist_File_Fold_Auto_Close      = 1
@@ -303,23 +293,10 @@ let Tlist_Sort_Type                 = 'order'
 let Tlist_Use_Right_Window          = 1
 let Tlist_WinWidth                  = 35
 "-------------------------------------------------------------------------------
-" clang_complete
+" taglist 
 "-------------------------------------------------------------------------------
-let g:clang_auto_select       = 0
-let g:clang_complete_auto     = 1
-let g:clang_complete_copen    = 0
-let g:clang_hl_errors         = 0
-let g:clang_periodic_quickfix = 0
-let g:clang_snippets          = 1
-let g:clang_close_preview     = 1
-let g:clang_complete_macros   = 1
-let g:clang_use_library       = 1
-let g:clang_library_path      = "/usr/lib64/llvm"
-let g:clang_user_options      = "-stdlib=libstdc++"
-"-------------------------------------------------------------------------------
-"" Ctags
-""-------------------------------------------------------------------------------
-set tags=tags,.tags
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0 
 
 "===================================================================================
 " PREDEFINED LINES {{{1
@@ -341,11 +318,11 @@ augroup END
 "-------------------------------------------------------------------------------
 " Bash
 "-------------------------------------------------------------------------------
+" comment func
 function! s:LeoBashComment()
   let s:eol   = "\<enter>"
   let s:date  = strftime("%Y-%m-%d")
   let s:fname = expand('%:t')
-
   let s:head =              "#!/bin/bash"
   let s:head = s:head.s:eol."#==============================================================================="
   let s:head = s:head.s:eol."#      FILENAME: ".s:fname
@@ -357,7 +334,6 @@ function! s:LeoBashComment()
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
   let s:tail =        s:eol."# vim:ts=2:sw=2:et:ft=sh:"
-
   exec "normal O".s:head
   exec "normal Go".s:tail
   exec "normal kO"
@@ -371,11 +347,11 @@ endif
 "-------------------------------------------------------------------------------
 " Makefile
 "-------------------------------------------------------------------------------
+" comment func
 function! s:LeoMakefileComment()
   let s:eol   = "\<enter>\<esc>d0i"
   let s:date  = strftime("%Y-%m-%d")
   let s:fname = expand('%:t')
-
   let s:head =              "#==============================================================================="
   let s:head = s:head.s:eol."#      FILENAME: ".s:fname
   let s:head = s:head.s:eol."#         USAGE: make            :generate executable"
@@ -390,7 +366,6 @@ function! s:LeoMakefileComment()
   let s:head = s:head.s:eol."#      REVISION: ".s:date." by leoxiang"
   let s:head = s:head.s:eol."#==============================================================================="
   let s:tail =        s:eol."# vim:ts=4:sw=4:ft=make:"
-
   exec "normal O".s:head
   exec "normal Go".s:tail
   exec "normal kO"
@@ -403,11 +378,11 @@ endif
 "-------------------------------------------------------------------------------
 " C/C++
 "-------------------------------------------------------------------------------
+" comment func
 function! s:LeoCComment()
   let s:eol   = "\<enter>"
   let s:date  = strftime("%Y-%m-%d")
   let s:fname = expand('%:t')
-
   let s:line  = []
   let s:line += ["// File:        ".s:fname]
   let s:line += ["// Description: ---"]
@@ -418,11 +393,12 @@ function! s:LeoCComment()
   let s:line += [""]
   let s:line += [""]
   let s:line += ["// vim:ts=4:sw=4:et:ft=cpp:"]
-
   call setline(1, s:line)
+  call s:LeoCInit()
   exec "normal Gkk"
   start!
 endfunction 
+" init func
 function! s:LeoCInit()
   set fdm=indent
   set fdc=2
@@ -433,13 +409,20 @@ function! s:LeoCInit()
   inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
   vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 endfunction 
+" set autocmd
 if has("autocmd")
   autocmd  BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCComment()
   autocmd  BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCInit()
 endif
+" fix gcc 4.8 compile errror
+set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
+      \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
+      \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
+set equalprg=clang-format
 "-------------------------------------------------------------------------------
 " XML
 "-------------------------------------------------------------------------------
+" comment func
 let g:xml_syntax_folding = 1
 function! s:LeoXMLComment()
   let s:line  = []
@@ -448,16 +431,17 @@ function! s:LeoXMLComment()
   let s:line += ['']
   let s:line += ['']
   let s:line += ['<!-- vim:set ts=2 sw=2 et ft=xml fdm=syntax: -->']
-
   call setline(1, s:line)
   exec "normal Gkk"
   start!
 endfunction 
+" init func
 function! s:LeoXMLInit()
   set fdm=syntax
   set fdc=2
   set fdl=99
 endfunction 
+" set autocmd
 if has("autocmd")
   autocmd  BufNewFile *.xml call s:LeoXMLComment()
   autocmd  BufReadPre *.xml call s:LeoXMLInit()
@@ -465,8 +449,42 @@ endif
 "-------------------------------------------------------------------------------
 " Protobuf
 "-------------------------------------------------------------------------------
-augroup filetype
-  au! BufRead,BufNewFile *.proto setfiletype proto
-augroup end
+" comment func
+function! s:LeoProtoComment()
+  let s:eol   = "\<enter>"
+  let s:date  = strftime("%Y-%m-%d")
+  let s:fname = expand('%:t')
+  let s:line  = []
+  let s:line += ["// File:        ".s:fname]
+  let s:line += ["// Description: ---"]
+  let s:line += ["// Notes:       ---"]
+  let s:line += ["// Author:      leoxiang <leoxiang727@qq.com>"]
+  let s:line += ["// Revision:    ".s:date." by leoxiang"]
+  let s:line += [""]
+  let s:line += [""]
+  let s:line += [""]
+  let s:line += ["// vim:ts=4:sw=4:et:ft=proto:"]
+  call setline(1, s:line)
+  call s:LeoProtoInit()
+  exec "normal Gkk"
+  start!
+endfunction 
+" init func
+function! s:LeoProtoInit()
+  set ft=proto
+  set fdm=indent
+  set fdc=2
+  set fdl=99
+  inoremap  <buffer>  /*       /*<Space><Space>*/<Left><Left><Left>
+  vnoremap  <buffer>  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
+  inoremap  <buffer>  /*<CR>  /*<CR><CR>/<Esc>kA<Space>
+  inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
+  vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
+endfunction 
+" set autocmd
+if has("autocmd")
+  autocmd  BufNewFile *.proto call s:LeoProtoComment()
+  autocmd  BufReadPre *.proto call s:LeoProtoInit()
+endif
 
 " vim:ts=2:sw=2:et:ft=vim:tw=85:fdm=marker:fdc=2

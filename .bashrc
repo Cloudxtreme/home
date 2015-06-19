@@ -49,6 +49,8 @@ alias la='ll -A'
 alias l='ll'
 alias c='clear'
 alias vi='vim'
+alias gentags='sudo ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .'
+alias showerr='cpp -dM /usr/include/errno.h | grep "define E" | sort -n -k 3'
 
 # set default editor
 export EDITOR=vim
