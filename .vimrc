@@ -57,8 +57,7 @@ set tabstop=4                   " Number of spaces that a <Tab> counts for
 set whichwrap+=<,>,[,],~,b,s    " Set how the cursor could be wrap between lines
 set wildignore=*.bak,*.o,*.e,*~ " Wildmenu: ignore these extensions
 set wildmenu                    " Command-line completion in an enhanced mode
-set cst                         " let <C-LeftMouse> use ctags instead of tags
-set completeopt=menuone         " let clang_complete not popup preview window
+set completeopt=longest,menu    " let clang_complete not popup preview window
 
 "===================================================================================
 " EDIT SETTINGS {{{1
@@ -118,27 +117,25 @@ let g:mapleader = ","
 "-------------------------------------------------------------------------------
 " Set mouse behavior
 "-------------------------------------------------------------------------------
-nmap <2-leftmouse>  *N
-nmap <rightmouse>   <c-o>
+nnoremap <2-leftmouse>  *N
+nnoremap <rightmouse>   <c-o>
+xnoremap <rightmouse>   <esc><c-o>
+nnoremap <c-leftmouse>  <leftmouse>:YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <c-rightmouse> <leftmouse><c-]>
+
 "-------------------------------------------------------------------------------
 " Some fast editing keymaps
 "-------------------------------------------------------------------------------
-nmap <leader>ss     :w!<cr>
-nmap <leader>gg     :Rgrep<cr>
-nmap <leader>gc     :Rgrep<cr><cr><cr>.cpp *.c<cr>
-nmap <leader>gh     :Rgrep<cr><cr><cr>.hpp *.h<cr>
-nmap <leader>gx     :Rgrep<cr><cr><cr>.xml<cr>
-nmap <leader>gs     :Rgrep<cr><cr><cr>.sh<cr>
-nmap <leader>so     :so %<cr>
-nmap <leader>mm     :Man 
-nmap <leader>e      :e! ~/.vimrc<cr>
-nmap <leader>h      :noh<cr>
-"nmap <leader>t      :call g:ClangUpdateQuickFix()<cr>:silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
-nmap <leader>dd     :Dox<cr>
-nmap <leader>df     :DoxAuthor<cr>
-nmap <leader>dl     :DoxLic<cr>
-nmap <leader>db     :DoxBlock<cr>
-nmap <leader>du     :DoxUndoc<cr>
+nnoremap <leader>ss     :w!<cr>
+nnoremap <leader>gg     :Rgrep<cr>
+nnoremap <leader>gc     :Rgrep<cr><cr><cr>.cpp *.c<cr>
+nnoremap <leader>gh     :Rgrep<cr><cr><cr>.hpp *.h<cr>
+nnoremap <leader>gx     :Rgrep<cr><cr><cr>.xml<cr>
+nnoremap <leader>gs     :Rgrep<cr><cr><cr>.sh<cr>
+nnoremap <leader>so     :so %<cr>
+nnoremap <leader>e      :e! ~/.vimrc<cr>
+nnoremap <leader>h      :noh<cr>
+nnoremap <leader>t      :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 "-------------------------------------------------------------------------------
 " Quickfix bindings
 "-------------------------------------------------------------------------------
@@ -153,20 +150,22 @@ function! s:ToggleQuickFix()
   endfor 
   bot copen 
 endfunction 
-nmap <leader>,  :cp<cr>
-nmap <leader>.  :cn<cr>
-nmap <leader>/  :cc<cr>
+nnoremap <leader>,  :cp<cr>
+nnoremap <leader>.  :cn<cr>
+nnoremap <leader>/  :cc<cr>
 "-------------------------------------------------------------------------------
 " Set Function keymaps
 "-------------------------------------------------------------------------------
-nmap <silent> <F1>        :BufExplorerHorizontalSplit<cr>
-nmap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
-nmap <silent> <F3>        :TlistToggle<cr>
-nmap <silent> <F4>        :TQuickFix<cr>
-imap <silent> <F1>   <esc>:BufExplorerHorizontalSplit<cr>
-imap <silent> <F2>   <Esc>:NERDTreeToggle<cr>
-imap <silent> <F3>   <Esc>:TlistToggle<cr>
-imap <silent> <F4>   <esc>:TQuickFix<cr> 
+nnoremap <silent> <F1>        :BufExplorerHorizontalSplit<cr>
+nnoremap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
+nnoremap <silent> <F3>        :TagbarToggle<cr>
+nnoremap <silent> <F4>        :TQuickFix<cr>
+nnoremap <silent> <F5>        :YcmDiags<CR>
+inoremap <silent> <F1>   <esc>:BufExplorerHorizontalSplit<cr>
+inoremap <silent> <F2>   <Esc>:NERDTreeToggle<cr>
+inoremap <silent> <F3>   <Esc>:TagbarToggle<cr>
+inoremap <silent> <F4>   <esc>:TQuickFix<cr> 
+inoremap <silent> <F5>   <esc>:YcmDiags<CR>
 "-------------------------------------------------------------------------------
 " Don't close window when deleting a buffer
 "-------------------------------------------------------------------------------
@@ -186,7 +185,7 @@ function! s:BufferClose()
     execute("bdelete! ".l:currentBufNum)
   endif
 endfunction
-nmap <leader>q      :BClose<cr>
+nnoremap <leader>q      :BClose<cr>
 "-------------------------------------------------------------------------------
 " Make editing easier
 "-------------------------------------------------------------------------------
@@ -210,12 +209,20 @@ vnoremap <c-l>    8<right>
 "-------------------------------------------------------------------------------
 " autocomplete quotes (visual and select mode)
 "-------------------------------------------------------------------------------
-xnoremap  <leader>'  s''<esc>P<right>
-xnoremap  <leader>"  s""<esc>P<right>
-xnoremap  <leader>`  s``<esc>P<right>
-xnoremap  <leader>(  s()<esc>P<right>
-xnoremap  <leader>[  s[]<esc>P<right>
-xnoremap  <leader>{  s{}<esc>P<right>
+xnoremap  '  s''<esc>P<right>
+xnoremap  "  s""<esc>P<right>
+xnoremap  `  s``<esc>P<right>
+xnoremap  (  s()<esc>P<right>
+xnoremap  [  s[]<esc>P<right>
+xnoremap  {  s{}<esc>P<right>
+"-------------------------------------------------------------------------------
+" autocomplete other half
+"-------------------------------------------------------------------------------
+inoremap  /*       /*<Space><Space>*/<Left><Left><Left>
+vnoremap  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
+inoremap  /*<CR>  /*<CR><CR>/<Esc>kA<Space>
+inoremap  {<CR>    {<CR>}<Esc>O
+vnoremap  {<CR>   S{<CR>}<Esc>Pk=iB
 
 "===================================================================================
 " PLUGIN CONFIGURATIONS {{{1
@@ -229,18 +236,19 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 " from vim-scripts
-Plugin 'taglist.vim'
-Plugin 'matrix.vim'
 Plugin 'grep.vim'
 Plugin 'vcscommand.vim'
 Plugin 'quickfixsigns'
 Plugin 'Align'
 Plugin 'xmledit'
 " from 3rd git-hub
+Plugin 'majutsushi/tagbar'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'tomtom/tcomment_vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
 call vundle#end()
 filetype plugin indent on
 "-------------------------------------------------------------------------------
@@ -254,7 +262,7 @@ let Grep_Default_Filelist = '*'
 let Grep_Skip_Dirs        = 'CVS .svn'
 let Grep_Skip_Files       = 'tags cscope'
 "-------------------------------------------------------------------------------
-" NERD_Tree
+" NERDTree
 "-------------------------------------------------------------------------------
 let NERDChristmasTree     = 1
 let NERDTreeAutoCenter    = 0
@@ -268,35 +276,32 @@ let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
 let NERDTreeIgnore        = ['\.dep$','\.o$','\.d$']
 "-------------------------------------------------------------------------------
-" NERD_Commenter
+" TComment
 "-------------------------------------------------------------------------------
-let NERDCreateDefaultMappings = 0
-nmap <c-c> <Plug>NERDCommenterComment
-nmap <c-x> <Plug>NERDCommenterUncomment
-vmap <c-c> <Plug>NERDCommenterComment
-vmap <c-x> <Plug>NERDCommenterUncomment
+nmap <c-c> <Plug>TComment_gcc
+xmap <c-c> <Plug>TComment_gc
 "-------------------------------------------------------------------------------
-" taglist 
+" tagbar
 "-------------------------------------------------------------------------------
-let Tlist_Auto_Highlight_Tag        = 1
-let Tlist_Auto_Update               = 1
-let Tlist_Close_On_Select           = 0
-let Tlist_Compact_Format            = 0
-"let Tlist_Ctags_Cmd                 = "/usr/bin/ctags"
-let Tlist_Display_Tag_Scope         = 1
-let Tlist_Enable_Fold_Column        = 1
-let Tlist_File_Fold_Auto_Close      = 1
-let Tlist_GainFocus_On_ToggleOpen   = 0
-let Tlist_Display_Prototype         = 0
-let Tlist_Show_One_File             = 0
-let Tlist_Sort_Type                 = 'order'
-let Tlist_Use_Right_Window          = 1
-let Tlist_WinWidth                  = 35
+let g:tagbar_autofocus = 1
 "-------------------------------------------------------------------------------
 " taglist 
 "-------------------------------------------------------------------------------
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0 
+"-------------------------------------------------------------------------------
+" YouCompleteMe
+"-------------------------------------------------------------------------------
+let g:ycm_global_ycm_extra_conf               = '~/.vim/.ycm_extra_conf.py' 
+let g:ycm_error_symbol                        = '>>'
+let g:ycm_warning_symbol                      = '>*'
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax        = 1
+let g:ycm_confirm_extra_conf                  = 0
+let g:ycm_cache_omnifunc                      = 0
+let g:ycm_complete_in_comments                = 1
+let g:ycm_min_num_of_chars_for_completion     = 1
+let g:ycm_use_ultisnips_completer             = 1
 
 "===================================================================================
 " PREDEFINED LINES {{{1
@@ -403,11 +408,6 @@ function! s:LeoCInit()
   set fdm=indent
   set fdc=2
   set fdl=99
-  inoremap  <buffer>  /*       /*<Space><Space>*/<Left><Left><Left>
-  vnoremap  <buffer>  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
-  inoremap  <buffer>  /*<CR>  /*<CR><CR>/<Esc>kA<Space>
-  inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
-  vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 endfunction 
 " set autocmd
 if has("autocmd")
@@ -475,11 +475,6 @@ function! s:LeoProtoInit()
   set fdm=indent
   set fdc=2
   set fdl=99
-  inoremap  <buffer>  /*       /*<Space><Space>*/<Left><Left><Left>
-  vnoremap  <buffer>  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
-  inoremap  <buffer>  /*<CR>  /*<CR><CR>/<Esc>kA<Space>
-  inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
-  vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 endfunction 
 " set autocmd
 if has("autocmd")

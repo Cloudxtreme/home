@@ -57,7 +57,6 @@ export EDITOR=vim
 
 # set PATH to include sbin
 export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH
-export PATH=/usr/local/llvm/bin:$PATH
 
 # set PATH to include my own bin path
 export PATH="$HOME/bin:$PATH"
