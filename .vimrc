@@ -97,14 +97,14 @@ if has("gui_running")
 else
   colorscheme tango
 endif
-"-------------------------------------------------------------------------------
-" Format the statusline
-"-------------------------------------------------------------------------------
-function! CurDir()
-   let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
-   return curdir
-endfunction
-set statusline=\ Dir:%r%{CurDir()}%h\ \ %F%m%r%h%w\ \ Line:%l/%L:%c
+" "-------------------------------------------------------------------------------
+" " Format the statusline
+" "-------------------------------------------------------------------------------
+" function! CurDir()
+"    let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
+"    return curdir
+" endfunction
+" set statusline=\ Dir:%r%{CurDir()}%h\ \ %F%m%r%h%w\ \ Line:%l/%L:%c
 
 "===================================================================================
 " KEYMAPS {{{1
@@ -249,6 +249,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
+Plugin 'Lokaltog/vim-powerline'
 call vundle#end()
 filetype plugin indent on
 "-------------------------------------------------------------------------------
@@ -289,6 +290,12 @@ let g:tagbar_autofocus = 1
 "-------------------------------------------------------------------------------
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0 
+"-------------------------------------------------------------------------------
+" powerline
+"-------------------------------------------------------------------------------
+"if want to use fancy,need to add font patch -> git clone git://gist.github.com/1630581.git ~/.fonts/ttf-dejavu-powerline
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_symbols = 'unicode'
 "-------------------------------------------------------------------------------
 " YouCompleteMe
 "-------------------------------------------------------------------------------
