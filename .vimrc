@@ -187,8 +187,8 @@ nnoremap Q          <nop>
 nnoremap s          :noh<cr>
 nnoremap S          :noh<cr>
 xnoremap p          pgvy
-" nmap     f          <Plug>(easymotion-s)
-" vmap     f          <Plug>(easymotion-s)
+nmap     f          <Plug>(easymotion-s)
+vmap     f          <Plug>(easymotion-s)
 vmap     v          <Plug>(expand_region_expand)
 vmap     <Enter>    <Plug>(EasyAlign)
 noremap  <c-h>      8<left>
@@ -246,7 +246,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
-" Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
@@ -365,14 +365,14 @@ set t_Co=256
 " colorscheme molokai
 colorscheme tango
 " colorscheme jellybeans
-" "------------------------------------------------------------
-" " easy motion
-" "------------------------------------------------------------
-" let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
-" let g:EasyMotion_smartcase = 1
-" let g:EasyMotion_use_smartsign_us = 1
-" let g:EasyMotion_use_upper = 1
-" let EasyMotion_leader_key='<leader><f12>'
+"------------------------------------------------------------
+" easy motion
+"------------------------------------------------------------
+let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_use_smartsign_us = 1
+let g:EasyMotion_use_upper = 1
+let EasyMotion_leader_key='<leader><f12>'
 "------------------------------------------------------------
 " expand region
 "------------------------------------------------------------
