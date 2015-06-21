@@ -39,6 +39,7 @@ set incsearch                   " Do incremental searching
 set laststatus=2                " Always show status line
 set listchars=tab:>.,eol:\$     " Strings to use in 'list' mode
 set modeline                    " Set modeline for root user
+set pastetoggle=<F9>            " Set paste toggle key
 set mouse=a                     " Enable the use of the mouse
 set mousehide                   " Hide the mouse when typing text
 set nobackup                    " Do not keep a backup file
@@ -152,12 +153,11 @@ endfunction
 "------------------------------------------------------------
 " Set Function keymaps
 "------------------------------------------------------------
-nnoremap <silent> <enter>     :BufExplorerHorizontalSplit<cr>
-nnoremap <silent> <F1>        :BufExplorerHorizontalSplit<cr>
+nnoremap <silent> <F1>        :ToggleBufExplorer<cr>
 nnoremap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
 nnoremap <silent> <F3>        :TagbarToggle<cr>
 nnoremap <silent> <F4>        :TQuickFix<cr>
-inoremap <silent> <F1>   <esc>:BufExplorerHorizontalSplit<cr>
+inoremap <silent> <F1>   <esc>:ToggleBufExplorer<cr>
 inoremap <silent> <F2>   <Esc>:NERDTreeToggle<cr>
 inoremap <silent> <F3>   <Esc>:TagbarToggle<cr>
 inoremap <silent> <F4>   <esc>:TQuickFix<cr>
@@ -181,6 +181,7 @@ nnoremap <leader>q        :BClose<cr>
 "------------------------------------------------------------
 " Make editing easier
 "------------------------------------------------------------
+nnoremap <space> i<space><esc><right>
 nnoremap  s  <nop>
 nnoremap  S  <nop>
 xnoremap  p  pgvy
@@ -194,6 +195,7 @@ vnoremap <c-k>    8<up>
 vnoremap <c-l>    8<right>
 noremap  <c-p>    :bp<CR>
 noremap  <c-n>    :bn<CR>
+noremap  <c-x>    :quit<cr>
 "------------------------------------------------------------
 " tab and window keymap
 "------------------------------------------------------------
@@ -235,29 +237,29 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
-Plugin 'grep.vim'
-Plugin 'vcscommand.vim'
-Plugin 'quickfixsigns'
-Plugin 'Align'
-Plugin 'xmledit'
-" from 3rd git-hub
-Plugin 'majutsushi/tagbar'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Lokaltog/vim-powerline'
 Plugin 'SirVer/ultisnips'
-" Plugin 'Lokaltog/vim-powerline'
-Plugin 'bling/vim-airline'
-Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'Lokaltog/vim-easymotion'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'kien/ctrlp.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'rhysd/vim-clang-format'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'sukima/xmledit'
 Plugin 'terryma/vim-expand-region'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tomtom/quickfixsigns_vim'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'vim-scripts/grep.vim'
+Plugin 'vim-scripts/vcscommand.vim'
 call vundle#end()
 filetype plugin indent on
-vmap <space>  <Plug>(expand_region_expand)
 "------------------------------------------------------------
 " NERDTree
 "------------------------------------------------------------
@@ -267,6 +269,21 @@ let NERDTreeChDirMode     = 2
 let NERDTreeWinSize       = 25
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
 let NERDTreeIgnore        = ['\.dep$','\.o$','\.d$']
+"------------------------------------------------------------
+" easy align
+"------------------------------------------------------------
+vmap <Enter> <Plug>(EasyAlign)
+function! GFM()
+  let langs = ['ruby', 'yaml', 'vim', 'c']
+  for lang in langs
+    unlet b:current_syntax
+    silent! exec printf("syntax include @%s syntax/%s.vim", lang, lang)
+    exec printf("syntax region %sSnip matchgroup=Snip start='```%s' end='```' contains=@%s",
+                \ lang, lang, lang)
+  endfor
+  let b:current_syntax='mkd'
+  syntax sync fromstart
+endfunction
 "------------------------------------------------------------
 " TComment
 "------------------------------------------------------------
@@ -345,22 +362,50 @@ set t_Co=256
 colorscheme tango
 " colorscheme jellybeans
 "------------------------------------------------------------
-" airline
-"------------------------------------------------------------
-" let g:airline_theme="solarized"
-" let g:airline_theme="base16"
-" let g:airline_theme="jellybeans"
-let g:airline_theme="molokai"
-"------------------------------------------------------------
 " easy motion
 "------------------------------------------------------------
-nmap s <Plug>(easymotion-s)
-vmap s <Plug>(easymotion-s)
+nmap f <Plug>(easymotion-s)
+vmap f <Plug>(easymotion-s)
+let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_use_smartsign_us = 1
+let g:EasyMotion_use_upper = 1
 "------------------------------------------------------------
 " expand region
 "------------------------------------------------------------
 vmap v <Plug>(expand_region_expand)
 vmap V <Plug>(expand_region_shrink)
+"------------------------------------------------------------
+" multi cursors
+"------------------------------------------------------------
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+"------------------------------------------------------------
+" ctrlp
+"------------------------------------------------------------
+let g:ctrlp_map='<c-f>'
+nnoremap <c-f> :CtrlP<cr>
+nnoremap <c-b> :CtrlPBuffer<cr>
+let g:ctrlp_match_window='top,order:btt,min:1,max:10,results:20'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|svn)$',
+  \ 'file': '\v\.(exe|so|dll|d|o)$',
+  \ }
+"------------------------------------------------------------
+" clang format
+"------------------------------------------------------------
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset" : -4,
+            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "Standard" : "C++11"}
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" Toggle auto formatting:
+nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 "============================================================
 " PREDEFINED LINES {{{1
