@@ -40,6 +40,9 @@ fi
 # another way to show colour on manpages
 alias man="TERMINFO=~/.terminfo/ LESS=C TERM=xterm PAGER=less man"
 
+# support 256 color
+export TERM="screen-256color"
+
 ############################################################
 # Edit Settings
 ############################################################
@@ -51,6 +54,7 @@ alias c='clear'
 alias vi='vim'
 alias gentags='sudo ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .'
 alias showerr='cpp -dM /usr/include/errno.h | grep "define E" | sort -n -k 3'
+alias tmux='tmux -2'
 
 # set default editor
 export EDITOR=vim
