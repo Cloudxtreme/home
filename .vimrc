@@ -128,9 +128,6 @@ function! s:ToggleQuickFix()
   endfor
   bot copen
 endfunction
-nnoremap <leader>,  :cp<cr>
-nnoremap <leader>.  :cn<cr>
-nnoremap <leader>/  :cc<cr>
 "------------------------------------------------------------
 " Don't close window when deleting a buffer
 "------------------------------------------------------------
@@ -164,26 +161,30 @@ inoremap <silent> <F4>   <esc>:TQuickFix<cr>
 "------------------------------------------------------------
 " Some fast editing keymaps
 "------------------------------------------------------------
-nnoremap <leader>ss       :w!<cr>
-nnoremap <leader>gg       :Rgrep<cr>
-nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
-nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
-nnoremap <leader>gx       :Rgrep<cr><cr><cr>.xml<cr>
-nnoremap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
-nnoremap <leader>so       :so %<cr>
-nnoremap <leader>e        :e! ~/.vimrc<cr>
-nnoremap <leader>h        :noh<cr>
-nnoremap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
-nnoremap <leader><space>  :FixWhitespace<cr>
-nnoremap <leader>y        :YcmDiags<CR>
-nnoremap <leader>i        :IndentLinesToggle<cr>
-nnoremap <leader>q        :BClose<cr>
+nmap <leader>ss       :w!<cr>
+nmap <leader>gg       :Rgrep<cr>
+nmap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
+nmap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
+nmap <leader>gx       :Rgrep<cr><cr><cr>.xml<cr>
+nmap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
+nmap <leader>so       :so %<cr>
+nmap <leader>e        :e! ~/.vimrc<cr>
+nmap <leader>h        :noh<cr>
+nmap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
+nmap <leader><space>  :FixWhitespace<cr>
+nmap <leader>y        :YcmDiags<CR>
+nmap <leader>i        :IndentLinesToggle<cr>
+nmap <leader>q        :BClose<cr>
+nmap <leader>,        :cp<cr>
+nmap <leader>.        :cn<cr>
+nmap <leader>/        :cc<cr>
 "------------------------------------------------------------
 " Make editing easier
 "------------------------------------------------------------
 nnoremap <space> i<space><esc><right>
 nnoremap  s  <nop>
 nnoremap  S  <nop>
+nnoremap  Q  <nop>
 xnoremap  p  pgvy
 nnoremap <c-h>    8<left>
 nnoremap <c-j>    8<down>
@@ -239,14 +240,12 @@ Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Lokaltog/vim-powerline'
-Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'kien/ctrlp.vim'
-Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
@@ -266,9 +265,9 @@ filetype plugin indent on
 let NERDTreeAutoCenter    = 0
 let NERDTreeShowBookmarks = 1
 let NERDTreeChDirMode     = 2
-let NERDTreeWinSize       = 25
+let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
-let NERDTreeIgnore        = ['\.dep$','\.o$','\.d$']
+let NERDTreeIgnore        = ['objdep$','\.o$','\.d$']
 "------------------------------------------------------------
 " easy align
 "------------------------------------------------------------
@@ -310,33 +309,7 @@ let g:ycm_confirm_extra_conf                  = 0
 let g:ycm_cache_omnifunc                      = 0
 let g:ycm_complete_in_comments                = 1
 let g:ycm_min_num_of_chars_for_completion     = 1
-let g:ycm_use_ultisnips_completer             = 1
-"------------------------------------------------------------
-" rainbow parentheses
-"------------------------------------------------------------
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" let g:ycm_use_ultisnips_completer             = 1
 "------------------------------------------------------------
 " indent line
 "------------------------------------------------------------
@@ -364,12 +337,13 @@ colorscheme tango
 "------------------------------------------------------------
 " easy motion
 "------------------------------------------------------------
-nmap f <Plug>(easymotion-s)
-vmap f <Plug>(easymotion-s)
+nmap s <Plug>(easymotion-s)
+vmap s <Plug>(easymotion-s)
 let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_use_upper = 1
+let EasyMotion_leader_key='<leader><f12>'
 "------------------------------------------------------------
 " expand region
 "------------------------------------------------------------
@@ -385,9 +359,9 @@ let g:multi_cursor_quit_key='<Esc>'
 "------------------------------------------------------------
 " ctrlp
 "------------------------------------------------------------
-let g:ctrlp_map='<c-f>'
-nnoremap <c-f> :CtrlP<cr>
-nnoremap <c-b> :CtrlPBuffer<cr>
+let g:ctrlp_map='<c-s>'
+" nnoremap <c-f> :CtrlP<cr>
+" nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_match_window='top,order:btt,min:1,max:10,results:20'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|svn)$',
@@ -396,10 +370,15 @@ let g:ctrlp_custom_ignore = {
 "------------------------------------------------------------
 " clang format
 "------------------------------------------------------------
+let g:clang_format#code_style = "google"
 let g:clang_format#style_options = {
             \ "AccessModifierOffset" : -4,
-            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlignTrailingComments" : "true",
+            \ "AlwaysBreakBeforeMultilineStrings" : "true",
             \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "BinPackParameters" : "true",
+            \ "ColumnLimit" : 120,
+            \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "true",
             \ "Standard" : "C++11"}
 " map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
@@ -515,7 +494,6 @@ endif
 set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
       \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
       \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
-set equalprg=clang-format
 "------------------------------------------------------------
 " Protobuf
 "------------------------------------------------------------
