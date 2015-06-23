@@ -107,14 +107,6 @@ endif
 let mapleader   = ","
 let g:mapleader = ","
 "------------------------------------------------------------
-" Set mouse behavior
-"------------------------------------------------------------
-nnoremap <2-leftmouse>  *N
-nnoremap <rightmouse>   <c-o>
-xnoremap <rightmouse>   <esc><c-o>
-nnoremap <c-leftmouse>  <leftmouse>:YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <c-rightmouse> <leftmouse><c-]>
-"------------------------------------------------------------
 " Quickfix bindings
 "------------------------------------------------------------
 command! TQuickFix call s:ToggleQuickFix()
@@ -159,45 +151,59 @@ inoremap <silent> <F2>   <Esc>:NERDTreeToggle<cr>
 inoremap <silent> <F3>   <Esc>:TagbarToggle<cr>
 inoremap <silent> <F4>   <esc>:TQuickFix<cr>
 "------------------------------------------------------------
+" Set mouse behavior
+"------------------------------------------------------------
+nnoremap <2-leftmouse>  *N
+nnoremap <rightmouse>   <c-o>
+nnoremap <c-leftmouse>  <leftmouse>:YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <c-rightmouse> <leftmouse><c-]>
+"------------------------------------------------------------
 " Some fast editing keymaps
 "------------------------------------------------------------
-nmap <leader>s        :w!<cr>
-nmap <leader>gg       :Rgrep<cr>
-nmap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
-nmap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
-nmap <leader>gx       :Rgrep<cr><cr><cr>.xml<cr>
-nmap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
-nmap <leader>e        :e! ~/.vimrc<cr>
-nmap <leader>p        ::UltiSnipsEdit<cr>
-nmap <leader>h        :noh<cr>
-nmap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
-nmap <leader><space>  :FixWhitespace<cr>
-nmap <leader>y        :YcmDiags<CR>
-nmap <leader>i        :IndentLinesToggle<cr>
-nmap <leader>q        :BClose<cr>
-nmap <leader>,        :cp<cr>
-nmap <leader>.        :cn<cr>
-nmap <leader>/        :cc<cr>
+nnoremap <leader>s        :w!<cr>
+nnoremap <leader>gg       :Rgrep<cr>
+nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
+nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
+nnoremap <leader>ga       :Rgrep<cr><cr><cr>.hpp *.h *.cpp *.c<cr>
+nnoremap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
+nnoremap <leader>e        :e! ~/.vimrc<cr>
+nnoremap <leader>p        ::UltiSnipsEdit<cr>
+nnoremap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
+nnoremap <leader><space>  :FixWhitespace<cr>
+nnoremap <leader>y        :YcmDiags<CR>
+nnoremap <leader>i        :IndentLinesToggle<cr>
+nnoremap <Leader>c        :ClangFormatAutoToggle<CR>
+nnoremap <Leader>cf       :<C-u>ClangFormat<CR>
+vnoremap <Leader>cf       :ClangFormat<CR>
+nnoremap <leader>,        :cp<cr>
+nnoremap <leader>.        :cn<cr>
+nnoremap <leader>/        :cc<cr>
 "------------------------------------------------------------
 " Make editing easier
 "------------------------------------------------------------
-nnoremap <space> i<space><esc><right>
-nnoremap  s  <nop>
-nnoremap  S  <nop>
-nnoremap  Q  <nop>
-xnoremap  p  pgvy
-nnoremap <c-h>    8<left>
-nnoremap <c-j>    8<down>
-nnoremap <c-k>    8<up>
-nnoremap <c-l>    8<right>
-vnoremap <c-h>    8<left>
-vnoremap <c-j>    8<down>
-vnoremap <c-k>    8<up>
-vnoremap <c-l>    8<right>
-noremap  <c-p>    :bp<CR>
-noremap  <c-n>    :bn<CR>
-noremap  <c-x>    :quit<cr>
-"------------------------------------------------------------
+nnoremap <space>    i<space><esc><right>
+nnoremap Q          <nop>
+xnoremap p          pgvy
+nmap     f          <Plug>(easymotion-s)
+vmap     f          <Plug>(easymotion-s)
+vmap     v          <Plug>(expand_region_expand)
+vmap     <Enter>    <Plug>(EasyAlign)
+noremap  <c-h>      8<left>
+noremap  <c-j>      8<down>
+noremap  <c-k>      8<up>
+noremap  <c-l>      8<right>
+noremap  <c-a>      <pageup>
+noremap  <c-u>      <pagedown>
+noremap  <c-q>      :BClose<cr>
+noremap  <c-w>      :winc w<cr>
+noremap  <c-e>      :winc q<cr>
+noremap  <c-s>      :noh<cr>
+noremap  <c-f>      :CtrlP<cr>
+nmap     <c-c>      <Plug>TComment_gcc
+vmap     <c-c>      <Plug>TComment_gc
+map      <c-left>   zM
+map      <c-right>  zR
+" ------------------------------------------------------------
 " tab and window keymap
 "------------------------------------------------------------
 nnoremap t<cr>    :tabnew<cr>
@@ -246,6 +252,7 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'kien/ctrlp.vim'
+Plugin 'Yggdroot/LeaderF'
 Plugin 'majutsushi/tagbar'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
@@ -272,7 +279,6 @@ let NERDTreeIgnore        = ['objdep$','\.o$','\.d$']
 "------------------------------------------------------------
 " easy align
 "------------------------------------------------------------
-vmap <Enter> <Plug>(EasyAlign)
 function! GFM()
   let langs = ['ruby', 'yaml', 'vim', 'c']
   for lang in langs
@@ -287,8 +293,6 @@ endfunction
 "------------------------------------------------------------
 " TComment
 "------------------------------------------------------------
-nmap <c-c> <Plug>TComment_gcc
-xmap <c-c> <Plug>TComment_gc
 "------------------------------------------------------------
 " tagbar
 "------------------------------------------------------------
@@ -313,8 +317,12 @@ let g:ycm_key_list_previous_completion        = ['<up>']
 " else return original tab
 function! g:Tab()
     call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0 && pumvisible()
-      return "\<c-n>"
+    if g:ulti_expand_res == 0
+      if pumvisible()
+        return "\<c-n>"
+      else
+        return "\<tab>"
+      endif
     else
       return ""
     endif
@@ -330,7 +338,8 @@ function! g:Enter()
 endfunction
 au InsertEnter * exec "inoremap <silent> <tab> <c-r>=g:Tab()<cr>"
 au InsertEnter * exec "inoremap <silent> <enter> <c-r>=g:Enter()<cr>"
-let g:UltiSnipsExpandTrigger = '<c-e>'
+" let g:UltiSnipsExpandTrigger = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger = "<enter>"
 "------------------------------------------------------------
 " indent line
 "------------------------------------------------------------
@@ -358,8 +367,6 @@ colorscheme tango
 "------------------------------------------------------------
 " easy motion
 "------------------------------------------------------------
-nmap s <Plug>(easymotion-s)
-vmap s <Plug>(easymotion-s)
 let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_smartsign_us = 1
@@ -368,7 +375,6 @@ let EasyMotion_leader_key='<leader><f12>'
 "------------------------------------------------------------
 " expand region
 "------------------------------------------------------------
-vmap v <Plug>(expand_region_expand)
 "------------------------------------------------------------
 " multi cursors
 "------------------------------------------------------------
@@ -379,9 +385,6 @@ let g:multi_cursor_quit_key='<Esc>'
 "------------------------------------------------------------
 " ctrlp
 "------------------------------------------------------------
-" let g:ctrlp_map='<c-s>'
-" nnoremap <c-f> :CtrlP<cr>
-" nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_match_window='top,order:btt,min:1,max:10,results:20'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|svn)$',
@@ -400,11 +403,6 @@ let g:clang_format#style_options = {
             \ "ColumnLimit" : 120,
             \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "true",
             \ "Standard" : "C++11"}
-" map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" Toggle auto formatting:
-nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 "============================================================
 " PREDEFINED LINES {{{1

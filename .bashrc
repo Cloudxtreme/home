@@ -24,6 +24,9 @@ unset MAILCHECK
 # not using gnome ask pass
 unset SSH_ASKPASS
 
+# prevent from xshell to lock screen
+stty -ixon
+
 ############################################################
 # Interface Settings
 ############################################################
