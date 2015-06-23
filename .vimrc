@@ -161,14 +161,14 @@ inoremap <silent> <F4>   <esc>:TQuickFix<cr>
 "------------------------------------------------------------
 " Some fast editing keymaps
 "------------------------------------------------------------
-nmap <leader>ss       :w!<cr>
+nmap <leader>s        :w!<cr>
 nmap <leader>gg       :Rgrep<cr>
 nmap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
 nmap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
 nmap <leader>gx       :Rgrep<cr><cr><cr>.xml<cr>
 nmap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
-nmap <leader>so       :so %<cr>
 nmap <leader>e        :e! ~/.vimrc<cr>
+nmap <leader>p        ::UltiSnipsEdit<cr>
 nmap <leader>h        :noh<cr>
 nmap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 nmap <leader><space>  :FixWhitespace<cr>
@@ -251,6 +251,7 @@ Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sukima/xmledit'
+Plugin 'SirVer/ultisnips'
 Plugin 'terryma/vim-expand-region'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tomtom/quickfixsigns_vim'
@@ -293,11 +294,6 @@ xmap <c-c> <Plug>TComment_gc
 "------------------------------------------------------------
 let g:tagbar_autofocus = 1
 "------------------------------------------------------------
-" taglist
-"------------------------------------------------------------
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
-"------------------------------------------------------------
 " YouCompleteMe
 "------------------------------------------------------------
 let g:ycm_global_ycm_extra_conf               = '~/.vim/.ycm_extra_conf.py'
@@ -306,10 +302,35 @@ let g:ycm_warning_symbol                      = '>*'
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax        = 1
 let g:ycm_confirm_extra_conf                  = 0
-let g:ycm_cache_omnifunc                      = 0
 let g:ycm_complete_in_comments                = 1
-let g:ycm_min_num_of_chars_for_completion     = 1
-" let g:ycm_use_ultisnips_completer             = 1
+let g:ycm_key_list_select_completion          = ['<down>']
+let g:ycm_key_list_previous_completion        = ['<up>']
+"------------------------------------------------------------
+" UltiSnips
+"------------------------------------------------------------
+" if has expand snippet, expand it
+" else if has complete options, navigate
+" else return original tab
+function! g:Tab()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0 && pumvisible()
+      return "\<c-n>"
+    else
+      return ""
+    endif
+endfunction
+" if has snippet jump forward, then jump
+" else return original enter
+function! g:Enter()
+  call UltiSnips#JumpForwards()
+  if g:ulti_jump_forwards_res == 0
+    return "\<enter>"
+  else
+    return ""
+endfunction
+au InsertEnter * exec "inoremap <silent> <tab> <c-r>=g:Tab()<cr>"
+au InsertEnter * exec "inoremap <silent> <enter> <c-r>=g:Enter()<cr>"
+let g:UltiSnipsExpandTrigger = '<c-e>'
 "------------------------------------------------------------
 " indent line
 "------------------------------------------------------------
@@ -348,7 +369,6 @@ let EasyMotion_leader_key='<leader><f12>'
 " expand region
 "------------------------------------------------------------
 vmap v <Plug>(expand_region_expand)
-vmap V <Plug>(expand_region_shrink)
 "------------------------------------------------------------
 " multi cursors
 "------------------------------------------------------------
@@ -359,7 +379,7 @@ let g:multi_cursor_quit_key='<Esc>'
 "------------------------------------------------------------
 " ctrlp
 "------------------------------------------------------------
-let g:ctrlp_map='<c-s>'
+" let g:ctrlp_map='<c-s>'
 " nnoremap <c-f> :CtrlP<cr>
 " nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_match_window='top,order:btt,min:1,max:10,results:20'
@@ -404,143 +424,25 @@ augroup Binary
   autocmd BufWritePost *.o,*.exe,*.mbr set nomod | endif
 augroup END
 "------------------------------------------------------------
-" Makefile
-"------------------------------------------------------------
-" comment func
-function! s:LeoMakefileComment()
-  let s:eol   = "\<enter>\<esc>d0i"
-  let s:date  = strftime("%Y-%m-%d")
-  let s:fname = expand('%:t')
-  let s:line  = []
-  let s:line += ["#==============================================================================="]
-  let s:line += ["#      FILENAME: ".s:fname]
-  let s:line += ["#   DESCRIPTION: ---"]
-  let s:line += ["#         NOTES: Makefile.shared - define project configuration"]
-  let s:line += ["#                Makefile.rule  - auto-generate dependencies for c/c++ files"]
-  let s:line += ["#                Remember to inlcude build.mk after all your targets!"]
-  let s:line += ["#        AUTHOR: leoxiang, leoxiang727@qq.com"]
-  let s:line += ["#      REVISION: ".s:date." by leoxiang"]
-  let s:line += ["#==============================================================================="]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += ["# vim:ts=4:sw=4:ft=make:"]
-  call setline(1, s:line)
-  exec "normal Gkk"
-  start!
-endfunction
-" set autocmd
-if has("autocmd")
-  autocmd BufNewFile makefile,Makefile,Makefile.* call s:LeoMakefileComment()
-endif
-"------------------------------------------------------------
 " Bash
 "------------------------------------------------------------
-" comment func
-function! s:LeoBashComment()
-  let s:eol   = "\<enter>"
-  let s:date  = strftime("%Y-%m-%d")
-  let s:fname = expand('%:t')
-  let s:line  = []
-  let s:line += ["#!/bin/bash"]
-  let s:line += ["#==============================================================================="]
-  let s:line += ["#      FILENAME: ".s:fname]
-  let s:line += ["#   DESCRIPTION: ---"]
-  let s:line += ["#         NOTES: ---"]
-  let s:line += ["#        AUTHOR: leoxiang, leoxiang727@qq.com"]
-  let s:line += ["#      REVISION: ".s:date." by leoxiang"]
-  let s:line += ["#==============================================================================="]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += ["# vim:ts=2:sw=2:et:ft=sh:"]
-  call setline(1, s:line)
-  exec "normal Gkk"
-  start!
-endfunction
-" set autocmd
-if has("autocmd")
-  autocmd BufNewFile *.sh call s:LeoBashComment()
-  autocmd BufReadPre *.sh set fdm=indent fdl=99
-endif
+autocmd BufReadPre *.sh set fdm=indent fdl=99
 "------------------------------------------------------------
 " C/C++
 "------------------------------------------------------------
-" comment func
-function! s:LeoCComment()
-  let s:eol   = "\<enter>"
-  let s:date  = strftime("%Y-%m-%d")
-  let s:fname = expand('%:t')
-  let s:line  = []
-  let s:line += ["// File:        ".s:fname]
-  let s:line += ["// Description: ---"]
-  let s:line += ["// Notes:       ---"]
-  let s:line += ["// Author:      leoxiang <leoxiang727@qq.com>"]
-  let s:line += ["// Revision:    ".s:date." by leoxiang"]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += ["// vim:ts=4:sw=4:et:ft=cpp:"]
-  call setline(1, s:line)
-  exec "normal Gkk"
-  start!
-endfunction
-" set autocmd
-if has("autocmd")
-  autocmd BufNewFile *.c,*.cpp,*.cc,*.h,*.hpp call s:LeoCComment()
-  autocmd BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp set fdm=indent fdl=99
+autocmd BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp set fdm=indent fdl=99
 endif
 " fix gcc 4.8 compile errror
-set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
-      \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
-      \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
+" set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
+"       \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
+"       \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
 "------------------------------------------------------------
 " Protobuf
 "------------------------------------------------------------
-" comment func
-function! s:LeoProtoComment()
-  let s:eol   = "\<enter>"
-  let s:date  = strftime("%Y-%m-%d")
-  let s:fname = expand('%:t')
-  let s:line  = []
-  let s:line += ["// File:        ".s:fname]
-  let s:line += ["// Description: ---"]
-  let s:line += ["// Notes:       ---"]
-  let s:line += ["// Author:      leoxiang <leoxiang727@qq.com>"]
-  let s:line += ["// Revision:    ".s:date." by leoxiang"]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += [""]
-  let s:line += ["// vim:ts=4:sw=4:et:ft=proto:"]
-  call setline(1, s:line)
-  exec "normal Gkk"
-  start!
-endfunction
-" set autocmd
-if has("autocmd")
-  autocmd BufNewFile *.proto call s:LeoProtoComment()
-  autocmd BufReadPre *.proto set fdm=indent fdl=99
-endif
+autocmd BufReadPre *.proto set fdm=indent fdl=99
 "------------------------------------------------------------
 " XML
 "------------------------------------------------------------
-" comment func
-let g:xml_syntax_folding = 1
-function! s:LeoXMLComment()
-  let s:line  = []
-  let s:line += ['<?xml version="1.0" encoding="GBK" standalone="yes" ?>']
-  let s:line += ['']
-  let s:line += ['']
-  let s:line += ['']
-  let s:line += ['<!-- vim:set ts=2 sw=2 et ft=xml fdm=syntax: -->']
-  call setline(1, s:line)
-  exec "normal Gkk"
-  start!
-endfunction
-" set autocmd
-if has("autocmd")
-  autocmd BufNewFile *.xml call s:LeoXMLComment()
-  autocmd BufReadPre *.xml set fdm=syntax fdl=99
-endif
+autocmd BufReadPre *.xml set fdm=indent fdl=99
 
 " vim:ts=2:sw=2:et:ft=vim:tw=85:fdm=marker

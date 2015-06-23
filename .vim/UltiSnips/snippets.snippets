@@ -1,0 +1,13 @@
+priority -50
+
+############################################################
+# snip
+snippet snip "Snippet definition" b
+############################################################
+# $1
+`!p snip.rv = "snippet"` ${1} "$2" $3
+${VISUAL}$0
+`!p snip.rv = "endsnippet"`
+endsnippet
+
+# vim:ft=snippets:

@@ -1,0 +1,51 @@
+priority -50
+extends c
+# vim:ft=snippets:
+
+############################################################
+# head
+snippet head "file head" b
+// File:        `!v expand("%:t")`
+// Description: ---
+// Notes:       ---
+// Author:      leoxiang <leoxiang727@qq.com>
+// Revision:    `!v strftime("%Y-%m-%d")` by leoxiang
+
+$0
+
+// vim:ts=4:sw=4:et:ft=cpp:
+endsnippet
+
+############################################################
+# beginend
+snippet beginend "$1.begin(), $1.end()"
+${1:v}begin(), $1end()
+endsnippet
+
+############################################################
+# class
+snippet class "class" b
+class ${1:name} {
+public:
+	$1($2);
+	virtual ~$1();
+
+private:
+	${0}
+};
+endsnippet
+
+############################################################
+# ns
+snippet ns "namespace" b
+namespace ${1:name} {
+	${VISUAL}$0
+} // end namespace $1
+endsnippet
+
+############################################################
+# tp
+snippet tp "template <typename ..>"
+template <typename ${1:name}>
+${0:class}
+endsnippet
