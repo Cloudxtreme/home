@@ -431,7 +431,6 @@ autocmd BufReadPre *.sh set fdm=indent fdl=99
 " C/C++
 "------------------------------------------------------------
 autocmd BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp set fdm=indent fdl=99
-endif
 " fix gcc 4.8 compile errror
 " set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
 "       \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
