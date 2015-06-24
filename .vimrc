@@ -68,8 +68,8 @@ set shortmess=a
 "------------------------------------------------------------
 " Automatic open quickfix windows after cmd, like make.
 "------------------------------------------------------------
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
+autocmd QuickFixCmdPost [^l]* nested bot cwindow
+autocmd QuickFixCmdPost    l* nested bot lwindow
 "------------------------------------------------------------
 " Multi-encoding setting
 "------------------------------------------------------------
@@ -118,7 +118,7 @@ function! s:ToggleQuickFix()
       return
     endif
   endfor
-  bot copen
+  bot cwindow
 endfunction
 "------------------------------------------------------------
 " Don't close window when deleting a buffer
@@ -161,6 +161,7 @@ nnoremap <c-rightmouse> <leftmouse><c-]>
 " Some fast editing keymaps
 "------------------------------------------------------------
 nnoremap <leader>s        :w!<cr>
+nnoremap <leader>m        :make<cr>
 nnoremap <leader>gg       :Rgrep<cr>
 nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
 nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
@@ -291,12 +292,11 @@ function! GFM()
   syntax sync fromstart
 endfunction
 "------------------------------------------------------------
-" TComment
-"------------------------------------------------------------
-"------------------------------------------------------------
 " tagbar
 "------------------------------------------------------------
-let g:tagbar_autofocus = 1
+let g:tagbar_width = 40
+let g:tagbar_sort = 0
+let g:tagbar_autoshowtag = 1
 "------------------------------------------------------------
 " YouCompleteMe
 "------------------------------------------------------------
