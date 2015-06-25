@@ -68,8 +68,8 @@ set shortmess=a
 "------------------------------------------------------------
 " Automatic open quickfix windows after cmd, like make.
 "------------------------------------------------------------
-autocmd QuickFixCmdPost [^l]* nested bot cwindow
-autocmd QuickFixCmdPost    l* nested bot lwindow
+autocmd QuickFixCmdPost [^l]* nested bot cwindow 5 | redraw
+autocmd QuickFixCmdPost    l* nested bot lwindow 5 | redraw
 "------------------------------------------------------------
 " Multi-encoding setting
 "------------------------------------------------------------
@@ -118,7 +118,7 @@ function! s:ToggleQuickFix()
       return
     endif
   endfor
-  bot cwindow
+  bot cwindow 5
 endfunction
 "------------------------------------------------------------
 " Don't close window when deleting a buffer
@@ -161,7 +161,7 @@ nnoremap <c-rightmouse> <leftmouse><c-]>
 " Some fast editing keymaps
 "------------------------------------------------------------
 nnoremap <leader>s        :w!<cr>
-nnoremap <leader>m        :make<cr>
+nnoremap <leader>m        :make<cr>:redraw!<cr>
 nnoremap <leader>gg       :Rgrep<cr>
 nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
 nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
@@ -184,9 +184,11 @@ nnoremap <leader>/        :cc<cr>
 "------------------------------------------------------------
 nnoremap <space>    i<space><esc><right>
 nnoremap Q          <nop>
+nnoremap s          :noh<cr>
+nnoremap S          :noh<cr>
 xnoremap p          pgvy
-nmap     f          <Plug>(easymotion-s)
-vmap     f          <Plug>(easymotion-s)
+" nmap     f          <Plug>(easymotion-s)
+" vmap     f          <Plug>(easymotion-s)
 vmap     v          <Plug>(expand_region_expand)
 vmap     <Enter>    <Plug>(EasyAlign)
 noremap  <c-h>      8<left>
@@ -195,10 +197,9 @@ noremap  <c-k>      8<up>
 noremap  <c-l>      8<right>
 noremap  <c-a>      <pageup>
 noremap  <c-u>      <pagedown>
-noremap  <c-q>      :BClose<cr>
+noremap  <c-s>      :BClose<cr>
 noremap  <c-w>      :winc w<cr>
-noremap  <c-e>      :winc q<cr>
-noremap  <c-s>      :noh<cr>
+noremap  <c-q>      :winc q<cr>
 noremap  <c-f>      :CtrlP<cr>
 nmap     <c-c>      <Plug>TComment_gcc
 vmap     <c-c>      <Plug>TComment_gc
@@ -245,7 +246,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'tomasr/molokai'
 Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
-Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
@@ -364,14 +365,14 @@ set t_Co=256
 " colorscheme molokai
 colorscheme tango
 " colorscheme jellybeans
-"------------------------------------------------------------
-" easy motion
-"------------------------------------------------------------
-let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_use_smartsign_us = 1
-let g:EasyMotion_use_upper = 1
-let EasyMotion_leader_key='<leader><f12>'
+" "------------------------------------------------------------
+" " easy motion
+" "------------------------------------------------------------
+" let g:EasyMotion_keys = 'asdghklqwertyuiopzxcvbnmfj'
+" let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_use_smartsign_us = 1
+" let g:EasyMotion_use_upper = 1
+" let EasyMotion_leader_key='<leader><f12>'
 "------------------------------------------------------------
 " expand region
 "------------------------------------------------------------
