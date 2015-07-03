@@ -68,8 +68,8 @@ set shortmess=a
 "------------------------------------------------------------
 " Automatic open quickfix windows after cmd, like make.
 "------------------------------------------------------------
-autocmd QuickFixCmdPost [^l]* nested bot cwindow 8 | redraw
-autocmd QuickFixCmdPost    l* nested bot lwindow 8 | redraw
+autocmd QuickFixCmdPost [^l]* nested bot cwindow 10 | redraw
+autocmd QuickFixCmdPost    l* nested bot lwindow 10 | redraw
 "------------------------------------------------------------
 " Multi-encoding setting
 "------------------------------------------------------------
@@ -118,7 +118,7 @@ function! s:ToggleQuickFix()
       return
     endif
   endfor
-  bot cwindow 8
+  bot cwindow 10
 endfunction
 "------------------------------------------------------------
 " Don't close window when deleting a buffer
@@ -162,6 +162,7 @@ nnoremap <c-rightmouse> <leftmouse><c-]>
 "------------------------------------------------------------
 nnoremap <leader>s        :w!<cr>
 nnoremap <leader>m        :make<cr>:redraw!<cr>
+nnoremap <leader>e        :echo expand('%:p')<cr>
 nnoremap <leader>gg       :Rgrep<cr>
 nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
 nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
@@ -197,10 +198,10 @@ noremap  <c-k>      8<up>
 noremap  <c-l>      8<right>
 noremap  <c-a>      <pageup>
 noremap  <c-u>      <pagedown>
-noremap  <c-s>      :BClose<cr>
+noremap  <c-e>      :BClose<cr>
 noremap  <c-w>      :winc w<cr>
 noremap  <c-q>      :winc q<cr>
-noremap  <c-f>      :CtrlP<cr>
+noremap  <c-s>      :CtrlP<cr>
 nmap     <c-c>      <Plug>TComment_gcc
 vmap     <c-c>      <Plug>TComment_gc
 map      <c-left>   zM
