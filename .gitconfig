@@ -1,15 +1,15 @@
 [user]
     name  = "rangerheart"
     email = leoxiang727@qq.com
-  
+
 [color]
-    ui = true  
+    ui = true
 
 [alias]
-    co = checkout  
-    ci = commit  
-    st = status  
-    br = branch  
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
 
 [core]
     editor = "vim"

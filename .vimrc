@@ -311,6 +311,7 @@ let g:ycm_confirm_extra_conf                  = 0
 let g:ycm_complete_in_comments                = 1
 let g:ycm_key_list_select_completion          = ['<down>']
 let g:ycm_key_list_previous_completion        = ['<up>']
+let g:ycm_min_num_of_chars_for_completion     = 1
 "------------------------------------------------------------
 " UltiSnips
 "------------------------------------------------------------
