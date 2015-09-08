@@ -249,7 +249,7 @@ Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Lokaltog/vim-powerline'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'jlanzarotta/bufexplorer'
