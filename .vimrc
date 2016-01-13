@@ -146,10 +146,12 @@ nnoremap <silent> <F1>        :ToggleBufExplorer<cr>
 nnoremap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
 nnoremap <silent> <F3>        :TagbarToggle<cr>
 nnoremap <silent> <F4>        :TQuickFix<cr>
-inoremap <silent> <F1>   <esc>:ToggleBufExplorer<cr>
-inoremap <silent> <F2>   <Esc>:NERDTreeToggle<cr>
-inoremap <silent> <F3>   <Esc>:TagbarToggle<cr>
-inoremap <silent> <F4>   <esc>:TQuickFix<cr>
+nnoremap <silent> <F5>        :exec '!python' shellescape(@%, 1)<cr>
+inoremap <silent> <F1>   <ESC>:ToggleBufExplorer<cr>
+inoremap <silent> <F2>   <ESC>:NERDTreeToggle<cr>
+inoremap <silent> <F3>   <ESC>:TagbarToggle<cr>
+inoremap <silent> <F4>   <ESC>:TQuickFix<cr>
+inoremap <silent> <F5>   <ESC>:exec '!python' shellescape(@%, 1)<cr>
 "------------------------------------------------------------
 " Set mouse behavior
 "------------------------------------------------------------
@@ -249,7 +251,7 @@ Bundle 'nanotech/jellybeans.vim'
 " from vim-scripts
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Lokaltog/vim-powerline'
-" Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'Yggdroot/indentLine'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'jlanzarotta/bufexplorer'
@@ -268,6 +270,7 @@ Plugin 'tomtom/quickfixsigns_vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'vim-scripts/grep.vim'
 Plugin 'vim-scripts/vcscommand.vim'
+Plugin 'fatih/vim-go'
 call vundle#end()
 filetype plugin indent on
 "------------------------------------------------------------
@@ -278,7 +281,7 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeChDirMode     = 2
 let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
-let NERDTreeIgnore        = ['objdep$','\.o$','\.d$']
+let NERDTreeIgnore        = ['objdep$','\.o$','\.d$','\.pb\.cc','\.pb\.h','\.xlsx']
 "------------------------------------------------------------
 " easy align
 "------------------------------------------------------------

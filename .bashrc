@@ -12,7 +12,7 @@ export HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it for setting history
 shopt -s histappend
 
-# check the window size after each command 
+# check the window size after each command
 shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -63,7 +63,8 @@ alias tmux='tmux -2'
 export EDITOR=vim
 
 # set PATH to include sbin
-export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH
+export GOPATH=~/gocode
+export PATH=/sbin:/usr/sbin:/usr/local/sbin:$GOPATH/bin:$PATH
 
 # set PATH to include my own bin path
 export PATH="$HOME/bin:$PATH"
@@ -86,7 +87,7 @@ PS1='$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD)'$PS1
   ## find whether the ssh2 agent process is alive
   #[ ! -z $SSH2_AGENT_PID ] && ! kill -0 $SSH2_AGENT_PID &>/dev/null 2>&1 && \
     #eval "$(ssh-agent | tee ~/.agent.env)" && \
-    #eval ssh-add 
+    #eval ssh-add
 #else
   ## start a new agent
   #eval "$(ssh-agent | tee ~/.agent.env)"
