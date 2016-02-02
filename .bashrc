@@ -63,7 +63,7 @@ alias tmux='tmux -2'
 export EDITOR=vim
 
 # set PATH to include sbin
-export GOPATH=~/gocode
+export GOPATH=$HOME/golang
 export PATH=/sbin:/usr/sbin:/usr/local/sbin:$GOPATH/bin:$PATH
 
 # set PATH to include my own bin path

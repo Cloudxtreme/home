@@ -2,6 +2,22 @@
 
 priority -50
 
+############################################################
+# head
+snippet head "file head" b
+// File:        `!v expand("%:t")`
+// Description: ---
+// Notes:       ---
+// Author:      leoxiang <leoxiang727@qq.com>
+// Revision:    `!v strftime("%Y-%m-%d")` by leoxiang
+
+package `!v expand("%:h:t")`
+
+$0
+
+// vim:ts=4:sw=4:et:ft=go:
+endsnippet
+
 # when to abbriviate and when not?
 # b doesn't work here, because it ignores whitespace
 # optional local name?

@@ -4,4 +4,84 @@
 
 priority -50
 
+############################################################
+# head
+snippet head "file head" b
+// File:        `!v expand("%:t")`
+// Description: ---
+// Notes:       ---
+// Author:      leoxiang <leoxiang727@qq.com>
+// Revision:    `!v strftime("%Y-%m-%d")` by leoxiang
+
+$0
+
+// vim:ts=4:sw=4:et:ft=cpp:
+endsnippet
+
+############################################################
+# inc
+snippet inc "" b
+#include "$0"
+endsnippet
+
+############################################################
+# def
+snippet def "#define ..."
+#define ${1}
+endsnippet
+
+############################################################
+# ifndef
+snippet ifndef "#ifndef ... #define ... #endif"
+#ifndef ${1/([A-Za-z0-9_]+).*/$1/}
+#define ${1:SYMBOL} ${2:value}
+#endif
+endsnippet
+
+############################################################
+# #if
+snippet #if "#if #endif" b
+#if ${1:0}
+${VISUAL}${0}
+#endif
+endsnippet
+
+############################################################
+# main
+snippet main "main() (main)"
+int main(int argc, char *argv[])
+{
+	${VISUAL}${0}
+	return 0;
+}
+endsnippet
+
+############################################################
+# for
+snippet for "for loop (for)"
+for (${2:i} = 0; $2 < ${1:count}; ${3:++$2}) {
+	${VISUAL}${0}
+}
+endsnippet
+
+############################################################
+# enum
+snippet enum "Enumeration"
+enum ${1:name} { $0 };
+endsnippet
+
+############################################################
+# printf
+snippet printf "printf .. (printf)"
+printf("${1:%s}\n"${1/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$2${1/([^%]|%%)*(%.)?.*/(?2:\);)/}
+endsnippet
+
+############################################################
+# st
+snippet st "struct"
+struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`} {
+	${0:/* data */}
+};
+endsnippet
+
 # vim:ft=snippets:

@@ -142,46 +142,47 @@ endfunction
 "------------------------------------------------------------
 " Set Function keymaps
 "------------------------------------------------------------
-nnoremap <silent> <F1>        :ToggleBufExplorer<cr>
-nnoremap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
-nnoremap <silent> <F3>        :TagbarToggle<cr>
-nnoremap <silent> <F4>        :TQuickFix<cr>
-nnoremap <silent> <F5>        :exec '!python' shellescape(@%, 1)<cr>
-inoremap <silent> <F1>   <ESC>:ToggleBufExplorer<cr>
-inoremap <silent> <F2>   <ESC>:NERDTreeToggle<cr>
-inoremap <silent> <F3>   <ESC>:TagbarToggle<cr>
-inoremap <silent> <F4>   <ESC>:TQuickFix<cr>
-inoremap <silent> <F5>   <ESC>:exec '!python' shellescape(@%, 1)<cr>
+nmap <silent> <F1>        :ToggleBufExplorer<cr>
+nmap <silent> <F2>        :NERDTreeToggle<cr>:wincmd p<cr>
+nmap <silent> <F3>        :TagbarToggle<cr>
+nmap <silent> <F4>        :TQuickFix<cr>
+imap <silent> <F1>   <ESC>:ToggleBufExplorer<cr>
+imap <silent> <F2>   <ESC>:NERDTreeToggle<cr>
+imap <silent> <F3>   <ESC>:TagbarToggle<cr>
+imap <silent> <F4>   <ESC>:TQuickFix<cr>
 "------------------------------------------------------------
 " Set mouse behavior
 "------------------------------------------------------------
 nnoremap <2-leftmouse>  *N
 nnoremap <rightmouse>   <c-o>
-nnoremap <c-leftmouse>  <leftmouse>:YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <c-rightmouse> <leftmouse><c-]>
+autocmd FileType c,cpp nnoremap <c-leftmouse>  <leftmouse>:YcmCompleter GoToDefinitionElseDeclaration<cr>
+autocmd FileType c,cpp nnoremap <c-rightmouse> <leftmouse><c-]>
+autocmd FileType go    nnoremap <c-leftmouse>  <leftmouse>:GoDef<cr>
+autocmd FileType go    nnoremap <c-rightmouse> <leftmouse>:GoDef<cr>
 "------------------------------------------------------------
 " Some fast editing keymaps
 "------------------------------------------------------------
 nnoremap <leader>s        :w!<cr>
-nnoremap <leader>m        :make<cr>:redraw!<cr>
-nnoremap <leader>e        :echo expand('%:p')<cr>
-nnoremap <leader>gg       :Rgrep<cr>
-nnoremap <leader>gc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
-nnoremap <leader>gh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
-nnoremap <leader>ga       :Rgrep<cr><cr><cr>.hpp *.h *.cpp *.c<cr>
-nnoremap <leader>gs       :Rgrep<cr><cr><cr>.sh<cr>
+nnoremap <leader>ff       :Rgrep<cr>
+nnoremap <leader>fc       :Rgrep<cr><cr><cr>.cpp *.c<cr>
+nnoremap <leader>fh       :Rgrep<cr><cr><cr>.hpp *.h<cr>
+nnoremap <leader>fa       :Rgrep<cr><cr><cr>.hpp *.h *.cpp *.c<cr>
+nnoremap <leader>fs       :Rgrep<cr><cr><cr>.sh<cr>
+nnoremap <leader>fg       :Rgrep<cr><cr><cr>.go<cr>
 nnoremap <leader>e        :e! ~/.vimrc<cr>
 nnoremap <leader>p        ::UltiSnipsEdit<cr>
 nnoremap <leader>t        :silent !ctags -R --sort=foldcase --c++-kinds=+p --fields=+ianS --extra=+q --language-force=auto .<cr>:redraw!<cr>
 nnoremap <leader><space>  :FixWhitespace<cr>
-nnoremap <leader>y        :YcmDiags<CR>
 nnoremap <leader>i        :IndentLinesToggle<cr>
-nnoremap <Leader>c        :ClangFormatAutoToggle<CR>
-nnoremap <Leader>cf       :<C-u>ClangFormat<CR>
-vnoremap <Leader>cf       :ClangFormat<CR>
 nnoremap <leader>,        :cp<cr>
 nnoremap <leader>.        :cn<cr>
 nnoremap <leader>/        :cc<cr>
+nnoremap <leader>m        :make<cr>:redraw!<cr>
+autocmd FileType c,cpp nnoremap <leader>b :make<cr>:redraw!<cr>
+autocmd FileType go    nnoremap <leader>b :GoBuild<cr>
+autocmd FileType go    nnoremap <leader>r :GoRun %<cr>
+autocmd FileType go    nnoremap <Leader>d :GoDoc<cr>
+" autocmd FileType go nmap <leader>r <Plug>(go-test)
 "------------------------------------------------------------
 " Make editing easier
 "------------------------------------------------------------
@@ -228,9 +229,6 @@ xnoremap  {  s{}<esc>P<right>
 "------------------------------------------------------------
 " autocomplete other half
 "------------------------------------------------------------
-inoremap  /*       /*<Space><Space>*/<Left><Left><Left>
-vnoremap  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
-inoremap  /*<CR>  /*<CR><CR>/<Esc>kA<Space>
 inoremap  {<CR>    {<CR>}<Esc>O
 vnoremap  {<CR>   S{<CR>}<Esc>Pk=iB
 
@@ -271,6 +269,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'vim-scripts/grep.vim'
 Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'fatih/vim-go'
+Plugin 'nsf/gocode'
 call vundle#end()
 filetype plugin indent on
 "------------------------------------------------------------
@@ -281,7 +280,7 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeChDirMode     = 2
 let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
-let NERDTreeIgnore        = ['objdep$','\.o$','\.d$','\.pb\.cc','\.pb\.h','\.xlsx']
+let NERDTreeIgnore        = ['objdep$','\.o$','\.d$','\.xlsx','\.pb\.cc','\.pb\.h','\.pb\.go']
 "------------------------------------------------------------
 " easy align
 "------------------------------------------------------------
@@ -342,10 +341,8 @@ function! g:Enter()
   else
     return ""
 endfunction
-au InsertEnter * exec "inoremap <silent> <tab> <c-r>=g:Tab()<cr>"
-au InsertEnter * exec "inoremap <silent> <enter> <c-r>=g:Enter()<cr>"
-" let g:UltiSnipsExpandTrigger = "<tab>"
-" let g:UltiSnipsJumpForwardTrigger = "<enter>"
+autocmd InsertEnter * exec "inoremap <silent> <tab> <c-r>=g:Tab()<cr>"
+autocmd InsertEnter * exec "inoremap <silent> <enter> <c-r>=g:Enter()<cr>"
 "------------------------------------------------------------
 " indent line
 "------------------------------------------------------------
@@ -379,8 +376,9 @@ let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_use_upper = 1
 let EasyMotion_leader_key='<leader><f12>'
 "------------------------------------------------------------
-" expand region
+" power line
 "------------------------------------------------------------
+let g:Powerline_stl_path_style = 'full'
 "------------------------------------------------------------
 " multi cursors
 "------------------------------------------------------------
@@ -409,9 +407,26 @@ let g:clang_format#style_options = {
             \ "ColumnLimit" : 120,
             \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "true",
             \ "Standard" : "C++11"}
+"------------------------------------------------------------
+" vim-go settings
+"------------------------------------------------------------
+" use goimports for formatting
+let g:go_fmt_command = "goimports"
+" turn highlighting on
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
+" add following lines to your vimrc file
+if !empty(glob("src"))
+  let $GOPATH=getcwd() . ":" . $GOPATH
+  let $PATH=getcwd() . "/bin:" . $PATH
+endif
 
 "============================================================
-" PREDEFINED LINES {{{1
+" PREDEFINED {{{1
 "============================================================
 "------------------------------------------------------------
 " binary file
@@ -430,22 +445,18 @@ augroup END
 "------------------------------------------------------------
 " Bash
 "------------------------------------------------------------
-autocmd BufReadPre *.sh set fdm=indent fdl=99
+autocmd Filetype sh set fdm=indent fdl=99
 "------------------------------------------------------------
 " C/C++
 "------------------------------------------------------------
-autocmd BufReadPre *.c,*.cpp,*.cc,*.h,*.hpp set fdm=indent fdl=99
-" fix gcc 4.8 compile errror
-" set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
-"       \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
-"       \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
+autocmd Filetype c,cpp set fdm=indent fdl=99
 "------------------------------------------------------------
 " Protobuf
 "------------------------------------------------------------
-autocmd BufReadPre *.proto set fdm=indent fdl=99
+autocmd Filetype proto set fdm=indent fdl=99
 "------------------------------------------------------------
 " XML
 "------------------------------------------------------------
-autocmd BufReadPre *.xml set fdm=indent fdl=99
+autocmd Filetype xml set fdm=indent fdl=99
 
 " vim:ts=2:sw=2:et:ft=vim:tw=85:fdm=marker
