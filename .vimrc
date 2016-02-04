@@ -280,7 +280,7 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeChDirMode     = 2
 let NERDTreeWinSize       = 35
 let NERDTreeBookmarksFile = $HOME."/.vim/.NERDTreeBookmarks"
-let NERDTreeIgnore        = ['objdep$','\.o$','\.d$','\.xlsx','\.pb\.cc','\.pb\.h','\.pb\.go']
+let NERDTreeIgnore        = ['objdep$','\.o$','\.d$','\.xlsx','\.pb\.cc','\.pb\.h']
 "------------------------------------------------------------
 " easy align
 "------------------------------------------------------------
@@ -419,7 +419,7 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
-" add following lines to your vimrc file
+" auto set gopath to current project
 if !empty(glob("src"))
   let $GOPATH=getcwd() . ":" . $GOPATH
   let $PATH=getcwd() . "/bin:" . $PATH
