@@ -424,6 +424,7 @@ if !empty(glob("src"))
   let $GOPATH=getcwd() . ":" . $GOPATH
   let $PATH=getcwd() . "/bin:" . $PATH
 endif
+autocmd QuickFixCmdPost *grep* cwindow
 
 "============================================================
 " PREDEFINED {{{1
